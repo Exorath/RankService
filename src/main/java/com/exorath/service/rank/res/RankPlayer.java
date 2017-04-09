@@ -14,26 +14,15 @@
  *    limitations under the License.
  */
 
-package com.exorath.service.rank;
-
-
-import com.exorath.service.rank.res.Rank;
-import com.exorath.service.rank.res.RankPlayer;
-import com.exorath.service.rank.res.Success;
+package com.exorath.service.rank.res;
 
 /**
- * Created by Toon on 4/8/2017.
+ * Created by Toon on 4/9/2017.
  */
-public interface Service {
-    String[] getRanks();
+public class RankPlayer {
+    private String rank;
 
-    Rank getRank(String rankId);
-
-    Success updateRank(String rankId, Rank rank);
-
-    RankPlayer getPlayer(String uuid);
-
-    Success setPlayerRank(String uuid, RankPlayer rank);
-
-    boolean inheritsFromRank(String uuid, String rank);
+    public String getRank() {
+        return rank;
+    }
 }
