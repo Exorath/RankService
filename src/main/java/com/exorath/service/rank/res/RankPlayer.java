@@ -16,11 +16,27 @@
 
 package com.exorath.service.rank.res;
 
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Property;
+
 /**
  * Created by Toon on 4/9/2017.
  */
+@Entity("rankplayers")
 public class RankPlayer {
+    @Id
+    private String id;
+    @Property("rank")
     private String rank;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getRank() {
         return rank;
