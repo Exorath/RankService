@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rankservice
+  labels:
+    app: rankservice
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: rankservice
+  type: ClusterIP
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: rankservice
+  labels:
+    app: rankservice
+spec:
+  strategy:
+    type: Recreate
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: rankservice
+    spec:
+      containers:
+      - name: rankservice
+        image: exorath/rankservice
+        ports:
+        - containerPort: 8080
+        env:
+        - name: PORT
+          value: "8080"
+        - name: MONGO_URI
+          value: "<INSERT_URI>"
+        - name: DB_NAME
+          value: "rankservice"
