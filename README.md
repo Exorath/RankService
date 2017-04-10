@@ -75,3 +75,9 @@ The service that provides tiered ranks and permissions, backed in mongodb.
 "inherits": true
 }
 ```
+
+## Environment
+| Name | Value |
+| --------- | --- |
+| MONGO_URI | {mongo_uri} |
+| DB_NAME | {db name to store data} |
