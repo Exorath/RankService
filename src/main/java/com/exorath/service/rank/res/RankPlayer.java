@@ -30,6 +30,12 @@ public class RankPlayer {
     @Property("rank")
     private String rank;
 
+    public RankPlayer() {}
+
+    public RankPlayer(String rank) {
+        this.rank = rank;
+    }
+
     public String getId() {
         return id;
     }
