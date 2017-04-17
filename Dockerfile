@@ -7,4 +7,4 @@ RUN mvn package
 
 ENV PORT 8080
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "target/CurrencyService.jar"]
+ENTRYPOINT ["java", "-jar", "target/RankService.jar"]
