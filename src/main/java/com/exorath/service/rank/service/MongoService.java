@@ -83,7 +83,7 @@ public class MongoService implements Service {
 
     @Override
     public RankPlayer getPlayer(String uuid) {
-        return datastore.createQuery(RankPlayer.class).field("_id").equal("uuid").get();
+        return datastore.createQuery(RankPlayer.class).field("_id").equal(uuid).get();
     }
 
     @Override
