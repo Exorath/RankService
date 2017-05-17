@@ -44,4 +44,8 @@ public class Rank {
     public String getInheritance() {
         return inheritance;
     }
+
+    public String getName() {
+        return name;
+    }
 }
