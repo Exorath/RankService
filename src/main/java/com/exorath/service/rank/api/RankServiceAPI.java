@@ -6,11 +6,13 @@ import com.exorath.service.rank.res.RankPlayer;
 import com.exorath.service.rank.res.Success;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 /**
+ * TODO HANDLE NULL JSON RESPONSES!
  * Created by toonsev on 4/10/2017.
  */
 public class RankServiceAPI implements Service {
@@ -24,8 +26,10 @@ public class RankServiceAPI implements Service {
     @Override
     public String[] getRanks() {
         try {
-            JsonObject res = GSON.fromJson(Unirest.get(url("/ranks")).asString().getBody(), JsonObject.class);
-            JsonArray jsonRanks = res.getAsJsonArray("ranks");
+            JsonElement res = GSON.fromJson(Unirest.get(url("/ranks")).asString().getBody(), JsonElement.class);
+            if (!res.isJsonObject())
+                return null;
+            JsonArray jsonRanks = res.getAsJsonObject().getAsJsonArray("ranks");
             if (jsonRanks == null)
                 return null;
             String[] ranks = new String[jsonRanks.size()];
@@ -41,8 +45,11 @@ public class RankServiceAPI implements Service {
     @Override
     public Rank getRank(String rankId) {
         try {
-          return GSON.fromJson(Unirest.get(url("/ranks/{rankId}"))
-                   .routeParam("rankId", rankId).asString().getBody(), Rank.class);
+            JsonElement res = GSON.fromJson(Unirest.get(url("/ranks/{rankId}"))
+                    .routeParam("rankId", rankId).asString().getBody(), JsonElement.class);
+            if (!res.isJsonObject())
+                return null;
+            return GSON.fromJson(res, Rank.class);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -53,10 +60,13 @@ public class RankServiceAPI implements Service {
     public Success updateRank(String rankId, Rank rank) {
         rank.setId(null);
         try {
-            return GSON.fromJson(Unirest.put(url("/ranks/{rankId}"))
+            JsonElement res = GSON.fromJson(Unirest.put(url("/ranks/{rankId}"))
                     .routeParam("rankId", rankId)
                     .body(GSON.toJson(rank))
-                    .asString().getBody(), Success.class);
+                    .asString().getBody(), JsonElement.class);
+            if (!res.isJsonObject())
+                return null;
+            return GSON.fromJson(res, Success.class);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -66,8 +76,11 @@ public class RankServiceAPI implements Service {
     @Override
     public RankPlayer getPlayer(String uuid) {
         try {
-            return GSON.fromJson(Unirest.get(url("/players/{playerId}"))
-                    .routeParam("playerId", uuid).asString().getBody(), RankPlayer.class);
+            JsonElement res = GSON.fromJson(Unirest.get(url("/players/{playerId}"))
+                    .routeParam("playerId", uuid).asString().getBody(), JsonElement.class);
+            if (!res.isJsonObject())
+                return null;
+            return GSON.fromJson(res, RankPlayer.class);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -78,10 +91,13 @@ public class RankServiceAPI implements Service {
     public Success setPlayerRank(String uuid, RankPlayer rankPlayer) {
         rankPlayer.setId(null);
         try {
-            return GSON.fromJson(Unirest.put(url("/players/{playerId}"))
+            JsonElement res=  GSON.fromJson(Unirest.put(url("/players/{playerId}"))
                     .routeParam("playerId", uuid)
                     .body(GSON.toJson(rankPlayer))
-                    .asString().getBody(), Success.class);
+                    .asString().getBody(), JsonElement.class);
+            if (!res.isJsonObject())
+                return new Success(false);
+            return GSON.fromJson(res, Success.class);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

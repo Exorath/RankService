@@ -32,7 +32,13 @@ public class RankPlayer {
 
     public RankPlayer() {}
 
+
     public RankPlayer(String rank) {
+        this.rank = rank;
+    }
+
+    public RankPlayer(String id, String rank) {
+        this.id = id;
         this.rank = rank;
     }
 
