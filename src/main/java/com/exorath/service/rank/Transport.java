@@ -81,9 +81,7 @@ public class Transport {
 
     public static Route getInheritsFromRoute(Service service) {
         return (req, res) -> {
-            JsonObject resObj = new JsonObject();
-            resObj.add("inherits", new JsonPrimitive(service.inheritsFromRank(req.params("uuid"), req.params("rankId"))));
-            return GSON.toJson(resObj);
+            return GSON.toJson(service.inheritsFromRank(req.params("uuid"), req.params("rankId")));
         };
     }
 }
