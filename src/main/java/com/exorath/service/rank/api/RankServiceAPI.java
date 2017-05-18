@@ -1,6 +1,7 @@
 package com.exorath.service.rank.api;
 
 import com.exorath.service.rank.Service;
+import com.exorath.service.rank.res.InheritsFromResponse;
 import com.exorath.service.rank.res.Rank;
 import com.exorath.service.rank.res.RankPlayer;
 import com.exorath.service.rank.res.Success;
@@ -105,12 +106,15 @@ public class RankServiceAPI implements Service {
     }
 
     @Override
-    public boolean inheritsFromRank(String uuid, String rankId) {
+    public InheritsFromResponse inheritsFromRank(String uuid, String rankId) {
         try {
-            return GSON.fromJson(Unirest.get(url("/players/{playerId}/inherits/{rankId}"))
+            JsonElement res =  GSON.fromJson(Unirest.get(url("/players/{playerId}/inherits/{rankId}"))
                     .routeParam("playerId", uuid)
                     .routeParam("rankId", rankId)
-                    .asString().getBody(), JsonObject.class).get("inherits").getAsBoolean();
+                    .asString().getBody(), JsonElement.class);
+            if(!res.isJsonObject())
+                return null;
+            return GSON.fromJson(res, InheritsFromResponse.class);
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalStateException(e);

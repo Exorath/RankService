@@ -17,6 +17,7 @@
 package com.exorath.service.rank.service;
 
 import com.exorath.service.rank.Service;
+import com.exorath.service.rank.res.InheritsFromResponse;
 import com.exorath.service.rank.res.Rank;
 import com.exorath.service.rank.res.RankPlayer;
 import com.exorath.service.rank.res.Success;
@@ -100,23 +101,21 @@ public class MongoService implements Service {
 
     //the inheritance set acts as a circuit breaker if there's a loop
     @Override
-    public boolean inheritsFromRank(String uuid, String rank) {
+    public InheritsFromResponse inheritsFromRank(String uuid, String rank) {
         RankPlayer rankPlayer = getPlayer(uuid);
-        if (rankPlayer == null)
-            return false;
-        if (rankPlayer.getRank() == null)
-            return false;
+        if (rankPlayer == null || rankPlayer.getRank() == null)
+            return new InheritsFromResponse(false);
         String inheritedRank = rankPlayer.getRank();
         Set<String> inherited = new HashSet<>();
         do {
             if (inherited.contains(inheritedRank))
-                return false;
+                return new InheritsFromResponse(false);
             if (rankPlayer.getRank().equals(rank))
-                return true;
+                return new InheritsFromResponse(true);
             inherited.add(inheritedRank);
             inheritedRank = getInheritedRank(inheritedRank);
         } while (inheritedRank != null);
-        return false;
+        return new InheritsFromResponse(false);
     }
 
     private String getInheritedRank(String rankId) {

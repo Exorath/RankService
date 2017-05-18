@@ -17,6 +17,7 @@
 package com.exorath.service.rank;
 
 
+import com.exorath.service.rank.res.InheritsFromResponse;
 import com.exorath.service.rank.res.Rank;
 import com.exorath.service.rank.res.RankPlayer;
 import com.exorath.service.rank.res.Success;
@@ -35,5 +36,5 @@ public interface Service {
 
     Success setPlayerRank(String uuid, RankPlayer rank);
 
-    boolean inheritsFromRank(String uuid, String rank);
+    InheritsFromResponse inheritsFromRank(String uuid, String rank);
 }
